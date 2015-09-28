@@ -84,23 +84,15 @@ static struct cdev *chrdev;
 
 static int init_drv(void)
 {
-	int err, devno;
+	int devno;
 
 	printk(KERN_INFO "%s\n",__FUNCTION__);
-
 	chrdev = cdev_alloc();
-
 	devno = MKDEV(JDRV_MAJOR, JDRV_MINOR);
 	cdev_init(chrdev, &drv_fops);
 	chrdev->owner = THIS_MODULE;
 	chrdev->ops = &drv_fops;
-	err = cdev_add(chrdev, devno, 1);
-
-	if (err)
-	{
-		printk(KERN_INFO "%s Fail to add cdev\n",__FUNCTION__);
-	}
-
+	cdev_add(chrdev, devno, 1);
 	return 0;
 }
 

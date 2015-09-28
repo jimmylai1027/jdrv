@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if lsmod | grep "j" &> /dev/null ; then
+if lsmod | grep "\<j\>" &> /dev/null ; then
 	echo "rmmod j"
 	rmmod j
 fi

@@ -1,19 +1,13 @@
-
-
 #include <linux/init.h>		/* essentail header */
 #include <linux/module.h>	
-
+#include <linux/cdev.h>		/* cdev_init cdev_add cdev_del */
 #include <linux/fs.h>		/* file operations */
-#include <asm/uaccess.h>	/* copy_from/to_user */
 #include <linux/slab.h>		/* kmalloc kfree */
 #include <linux/wait.h>		/* wait event */
 #include <linux/sched.h>	/* wait event */
 
-
 MODULE_LICENSE("Dual BSD/GPL");
 
-#define JDRV_MAJOR	60
-#define JDRV_NAME	"jdrv"
 
 typedef struct __S_JDRV
 {
@@ -81,16 +75,30 @@ static struct file_operations drv_fops =
 	.write = drv_write,
 };
 
+
+
+static struct cdev *chrdev;
+#define JDRV_MAJOR	60
+#define JDRV_MINOR	0
+
+
 static int init_drv(void)
 {
-	int ret;
+	int err, devno;
+
 	printk(KERN_INFO "%s\n",__FUNCTION__);
 
-	ret = register_chrdev(JDRV_MAJOR, JDRV_NAME, &drv_fops);
-	if (ret < 0)
+	chrdev = cdev_alloc();
+
+	devno = MKDEV(JDRV_MAJOR, JDRV_MINOR);
+	cdev_init(chrdev, &drv_fops);
+	chrdev->owner = THIS_MODULE;
+	chrdev->ops = &drv_fops;
+	err = cdev_add(chrdev, devno, 1);
+
+	if (err)
 	{
-		printk("Fail to register char device\n");
-		return ret;
+		printk(KERN_INFO "%s Fail to add cdev\n",__FUNCTION__);
 	}
 
 	return 0;
@@ -99,7 +107,7 @@ static int init_drv(void)
 static void exit_drv(void)
 {
 	printk(KERN_INFO "%s\n",__FUNCTION__);
-	unregister_chrdev(JDRV_MAJOR, JDRV_NAME);
+	cdev_del(chrdev);
 }
 
 module_init(init_drv);

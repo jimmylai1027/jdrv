@@ -12,11 +12,12 @@ static int fd;
 
 static void *my_task(void *dummy)
 {
+	int ret;
 	unsigned char byte;
 	byte = 0;
 	while(1)
 	{
-		write(fd,&byte,1);
+		ret = write(fd,&byte,1);
 		sleep(1);
 	}
 }

@@ -1,5 +1,5 @@
-obj-m	+= j.o 
-j-objs 	:= jdrv.o
+obj-m	+= m.o 
+m-objs 	:= mdrv.o
 
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules

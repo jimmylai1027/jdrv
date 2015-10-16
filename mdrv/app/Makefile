@@ -1,6 +1,6 @@
 CC	= gcc
-OBJS	= jmain.o
-TARGET	= japp
+OBJS	= mapp.o
+TARGET	= mapp
 CFLAGS	= -Os -pthread
 LDFLAGS	= -lpthread
 

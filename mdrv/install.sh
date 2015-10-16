@@ -1,24 +1,24 @@
 #!/bin/bash
 
-if lsmod | grep "\<j\>" &> /dev/null ; then
-	echo "rmmod j"
-	rmmod j
+if lsmod | grep "\<m\>" &> /dev/null ; then
+	echo "rmmod m"
+	rmmod m
 fi
 
-if [ -e j.ko ]; then
-	echo "insert j.ko"
-	insmod j.ko
+if [ -e m.ko ]; then
+	echo "insert m.ko"
+	insmod m.ko
 else
-	echo "j.ko does not exit."
+	echo "m.ko does not exit."
 	exit -1
 fi
 
-if [ ! -e /dev/jdrv ]; then
-	# make device node for char driver 'jdrv' 
+if [ ! -e /dev/mdrv ]; then
+	# make device node for char driver 'mdrv' 
 	# with major 60 and minor 0
-	echo "mknod /dev/jdrv c 60 0"
-	mknod /dev/jdrv c 60 0
+	echo "mknod /dev/mdrv c 60 0"
+	mknod /dev/mdrv c 60 0
 	# change file mode with rw
-	chmod 666 /dev/jdrv
+	chmod 666 /dev/mdrv
 fi
 

@@ -25,35 +25,6 @@ int main(int argc, char **argv)
         {
             printhex(argc - 1, argv + 1);
         }
-        else if (strcmp(argv[1], "aes") == 0)
-        {
-            if (argc > 2)
-            {
-                char pciv[16], pcck[16], *civ, *cck;
-                civ = cck = NULL;
-
-                if (argc >= 4)
-                {
-                    if (16 == conv_dump_to_buf(argv[3], pciv, 16) &&
-                            16 == conv_dump_to_buf(argv[4], pcck, 16))
-                    {
-                        civ = pciv;
-                        cck = pcck;
-                        fprintf(stderr, "Use civ: %s\n", argv[3]);
-                        fprintf(stderr, "Use cck: %s\n", argv[4]);
-                    }
-                }
-
-                if (strcmp(argv[2], "e") == 0)
-                {
-                    cipher(1, civ, cck);
-                }
-                else if (strcmp(argv[2], "d") == 0)
-                {
-                    cipher(0, civ, cck);
-                }
-            }
-        }
         else if (strcmp(argv[1], "base64") == 0)
         {
             if (argc > 2)

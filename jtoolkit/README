@@ -1,0 +1,15 @@
+# aesdecrypt
+cat $1 | jtk aes d $2 $3
+# aesencrypt
+cat $1 | jtk aes e $2 $3
+# base64decode
+cat $1 | jtk base64 d
+# base64encode
+cat $1 | jtk base64 e
+# dump2bin
+cat $1 | jtk dump2bin
+# line2bin
+cat $1 | jtk dump2bin line
+# printhex
+cat $1 | jtk printhex $2
+

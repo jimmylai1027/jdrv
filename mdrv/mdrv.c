@@ -15,15 +15,15 @@ typedef struct __S_MDRV
 {
 	wait_queue_head_t wq;
 #define MDRV_LOGBUF_SIZE	1024
-	unsigned char logbuf[MDRV_LOGBUF_SIZE];
+	char logbuf[MDRV_LOGBUF_SIZE];
 	unsigned int wp;
 	unsigned int rp;
 } S_MDRV;
 
 static void dump(const char *buf, unsigned int sz)
 {
-	unsigned char *str;
-	str = vmalloc(sz+1);
+	char *str;
+	str = (char*)vmalloc(sz+1);
 	if (str)
 	{
 		strncpy(str, buf, sz);
@@ -140,7 +140,7 @@ static ssize_t drv_read(
 {
 	ssize_t ret;
 	S_MDRV *jd = (S_MDRV *)filp->private_data;
-	dbg("%s: read %u byte%s\n", __FUNCTION__, size, size==1?"":"s");
+	dbg("%s: read %zd byte%s\n", __FUNCTION__, size, size==1?"":"s");
 	ret = wait_event_interruptible(jd->wq, get_logbuf_size(jd));
 	if (ret == 0)
 	{
@@ -156,7 +156,7 @@ static ssize_t drv_read(
 	}
 	else
 	{
-		dbg("wait_event_interruptible return %d\n", ret);
+		dbg("wait_event_interruptible return %zd\n", ret);
 	}
 	return ret;
 }
@@ -166,7 +166,7 @@ static ssize_t drv_write(
 {
 	ssize_t ret;
 	S_MDRV *jd = (S_MDRV *)filp->private_data;
-	dbg("%s: write %u byte%s\n", __FUNCTION__, size, size==1?"":"s");
+	dbg("%s: write %zd byte%s\n", __FUNCTION__, size, size==1?"":"s");
 	ret = writebuf(jd, buf, size);
 	if (ret>0)
 	{
